@@ -48,4 +48,39 @@ def save_face_encoding(client_info, encoding):
 
     return encodings[0]
 
+def load_registration_faces():
+    registration_faces = {}
+    folder = "faces/registration"
+    if not os.path.exists(folder):
+        return registration_faces
+    for filename in os.listdir(folder):
+        if not filename.endswith(".pkl"):
+            continue
+        client_name = filename[:-4]
+        ile_path = os.path.join(folder, filename)
 
+        with open(file_path, "rb") as file:
+            encoding = pickle.load(file)
+
+        registered_faces[client_name] = encoding
+
+    return registered_faces
+
+def recognize_face(unknown_ending, registration_faces):
+     if not registered_faces:
+        return None, None
+
+    names = list(registered_faces.keys())
+    encodings = list(registered_faces.values())
+
+    distances = face_recognition.face_distance(
+        encodings,
+        unknown_encoding
+    )
+
+    best_index = np.argmin(distances)
+
+    best_distance = distances[best_index]
+    best_name = names[best_index]
+
+    return best_name, float(best_distance)
