@@ -11,11 +11,18 @@ def prediction():
   data = request.get_json();
   clientinfo = data.get("Client Name")
 
-return jsonify({
+try:
+  return jsonify({
+    
   "client_name": clientinfo,
   "message": "Request received successfully"
   
 })
+
+except Exception as error:
+  return jsonify({
+    "error" : str(error)
+  }), 400
 
 if __name__ == "__main__":
     ApplicationInput.run(debug=True)
