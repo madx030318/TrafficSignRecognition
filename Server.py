@@ -1,14 +1,24 @@
-import requests
-from PIL import Image
-from io import BytesIO
+import cv2
+import numpy as np
 
-def download_image(image_url):
-    response = requests.get(image_url, timeout=10)
 
-    if response.status_code != 200:
-      raise Exception("Could not download image")
-      image = Image.open(BytesIO(response.content))
+face_detector = cv2.CascadeClassifier(
+    cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+)
 
-    return image
+
+def detect_faces(image):
+    image_array = np.array(image)
+
+    gray = cv2.cvtColor(image_array, cv2.COLOR_RGB2GRAY)
+
+    faces = face_detector.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(30, 30)
+    )
+
+    return faces
       
 
