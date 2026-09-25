@@ -10,14 +10,19 @@ def main():
 def prediction():
   data = request.get_json();
   clientinfo = data.get("Client Name")
+  imageinfo = data.get("Image_URL")
 
 try:
+
+  image = download_image(image_url)
+
+  faces = detect_faces(image)
+
   return jsonify({
-    
-  "client_name": clientinfo,
-  "message": "Request received successfully"
+    "client_name": client_name,
+    "faces_detected": len(faces)
+  })
   
-})
 
 except Exception as error:
   return jsonify({
