@@ -1,5 +1,11 @@
 from flask import Flask, request, jsonify
 
+from services.face_service import (
+    get_face_encoding,
+    save_face_encoding,
+    load_faces_registration
+)
+
 ApplicationInput = Flask(__name__)
 
 @ApplicationInput.route("/")
@@ -16,7 +22,9 @@ try:
 
   image = download_image(image_url)
 
-  faces = detect_faces(image)
+  encoding = get_face_encoding(image)
+
+  file_path = save_face_encoding(client_name, encoding)
 
   return jsonify({
     "client_name": client_name,
