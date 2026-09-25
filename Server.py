@@ -1,4 +1,6 @@
 import cv2
+import os
+import pickle
 import numpy as np
 
 
@@ -29,7 +31,21 @@ def get_face_encoding(image):
     if len(encodings) == 0:
         raise Exception("No face found")
 
+
+def save_face_encoding(client_info, encoding):
+    os.makedirs("face/registration", exist_ok=True)
+
+    file_path = f"faces/registration/{client_info}.pkl"
+
+    with open(file_path, "wb") as file:
+        pickle.dump(encoding, file)
+
+    return file_path
+    
+
     if len(encodings) > 1:
         raise Exception("More than one face found")
 
     return encodings[0]
+
+
