@@ -21,4 +21,15 @@ def detect_faces(image):
 
     return faces
       
+def get_face_encoding(image):
+    image_array = np.array(image)
 
+    encodings = face_recognition.face_encodings(image_array)
+
+    if len(encodings) == 0:
+        raise Exception("No face found")
+
+    if len(encodings) > 1:
+        raise Exception("More than one face found")
+
+    return encodings[0]
